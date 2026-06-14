@@ -4,7 +4,22 @@
 #define ALTURA 5
 #define LARGURA 9
 
-void desenhar (char mapa[][LARGURA + 1], int x, int y);
-void mover(char mapa[][LARGURA + 1], int *x, int *y, int tecla);
+typedef struct {
+    int x;
+    int y;
+    int hp;
+    char simbolo;
+} Jogador;
+
+typedef struct {
+    int x;
+    int y;
+    int hp;
+    char simbolo;
+} Monstro;
+
+
+void desenhar(char mapa[][LARGURA + 1], Jogador jogador, Monstro *monstros, int num_monstros);
+void mover(char mapa[][LARGURA + 1], Jogador *jogador, int tecla);
 
 #endif

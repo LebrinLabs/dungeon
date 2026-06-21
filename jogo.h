@@ -18,8 +18,8 @@ typedef struct {
     char simbolo;
 } Monstro;
 
-
 void desenhar(char mapa[][LARGURA + 1], Jogador jogador, Monstro *monstros, int num_monstros);
-void mover(char mapa[][LARGURA + 1], Jogador *jogador, int tecla);
+void mover(char mapa[][LARGURA + 1], Jogador *jogador, Monstro *monstros, int num_monstros, int tecla);
+int monstros_vivos(Monstro *monstros, int num_monstros);
 
 #endif

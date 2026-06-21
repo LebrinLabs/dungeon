@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>   // pra malloc e free
+#include <stdlib.h>
 #include "jogo.h"
 
 int main(void) {
@@ -11,19 +11,14 @@ int main(void) {
         "#########",
     };
 
-    // o jogador agora e uma struct (na stack)
     Jogador jogador = {4, 2, 100, '@'};
 
-    // imagine que esse numero veio em tempo de execucao
     int num_monstros = 2;
-
-    // aloca um array de monstros na HEAP
     Monstro *monstros = malloc(num_monstros * sizeof(Monstro));
-    if (monstros == NULL) {            // sempre cheque o malloc!
+    if (monstros == NULL) {
         printf("Sem memoria!\n");
         return 1;
     }
-
     monstros[0].x = 2; monstros[0].y = 1; monstros[0].hp = 20; monstros[0].simbolo = 'M';
     monstros[1].x = 6; monstros[1].y = 3; monstros[1].hp = 20; monstros[1].simbolo = 'M';
 
@@ -32,19 +27,28 @@ int main(void) {
 
     while (rodando) {
         desenhar(mapa, jogador, monstros, num_monstros);
+        printf("HP: %d | Monstros vivos: %d | WASD move, Q sai\n",
+               jogador.hp, monstros_vivos(monstros, num_monstros));
 
         tecla = getchar();
 
         if (tecla == 'q') {
             rodando = 0;
         } else {
-            mover(mapa, &jogador, tecla);   // passa o ENDERECO do jogador
+            mover(mapa, &jogador, monstros, num_monstros, tecla);
+        }
+
+        if (jogador.hp <= 0) {
+            printf("\nVoce morreu! Fim de jogo.\n");
+            printf("\nPress F to respect!\n");
+            rodando = 0;
+        } else if (monstros_vivos(monstros, num_monstros) == 0) {
+            printf("\nVoce venceu! Todos os monstros cairam!\n");
+            rodando = 0;
         }
     }
 
-    free(monstros);     // devolve a memoria — sem isso, vazamento!
-    monstros = NULL;    // bom habito: evita usar ponteiro "pendurado"
-
-    printf("Valeu pelo jogo!\n");
+    free(monstros);
+    monstros = NULL;
     return 0;
 }
